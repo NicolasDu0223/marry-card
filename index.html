@@ -64,7 +64,7 @@
     </section>
 
     <!-- 我们的故事 -->
-    <section id="our-story" class="py-20 px-4 max-w-4xl mx-auto bgOrange">
+    <section id="our-story" class="py-20 px-4 max-w-4xl mx-auto">
         <div class="mb-16 text-center">
             <h2 class="text-3xl font-bold text-pink-600 mb-2">我们的爱情故事</h2>
             <div class="w-20 h-1 bg-pink-400 mx-auto"></div>
@@ -290,6 +290,42 @@
         document.addEventListener('DOMContentLoaded', () => {
             updateCountdown();
             setInterval(updateCountdown, 1000);
+        });
+
+        //自动滚动
+        let scrollInterval;
+        let isScrolling = false;
+
+        function startScrolling() {
+            if (isScrolling) return;
+            isScrolling = true;
+            scrollInterval = setInterval(() => {
+                const currentPos = window.pageYOffset;
+                // window.scrollTo(0, currentPos + 1);
+                
+                window.scrollTo({ top: currentPos + 1, behavior: 'smooth' });
+                if (currentPos >= document.body.scrollHeight - window.innerHeight) {
+                    clearInterval(scrollInterval);
+                    isScrolling = false;
+                }
+            }, 10);
+        }
+        function stopScrolling() {
+            if (!isScrolling) {
+                // 当在底部时点击返回顶部
+                if (window.pageYOffset >= document.body.scrollHeight - window.innerHeight) {
+                    // window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+                return;
+            }
+            
+            clearInterval(scrollInterval);
+            isScrolling = false;
+        }
+        document.addEventListener('click', (e) => {
+            if (e.target.tagName !== 'BUTTON') {
+                isScrolling ? stopScrolling() : startScrolling();
+            }
         });
     </script>
 </body>
