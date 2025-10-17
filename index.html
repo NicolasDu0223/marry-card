@@ -340,7 +340,7 @@
             isScrolling = true;
             scrollInterval = setInterval(() => {
                 const currentPos = window.pageYOffset;
-                window.scrollTo(0, currentPos + 4);
+                window.scrollTo(0, currentPos + 2);
                 
                 // window.scrollTo({ top: currentPos + 120, behavior: 'smooth' });
                 if (currentPos >= document.body.scrollHeight - window.innerHeight) {
