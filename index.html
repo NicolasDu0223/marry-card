@@ -321,52 +321,68 @@
         }
         
         // 平滑滚动
-        // document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        //     anchor.addEventListener('click', function (e) {
-        //         e.preventDefault();
-        //         document.querySelector(this.getAttribute('href')).scrollIntoView({
-        //             behavior: 'smooth'
-        //         });
-        //     });
-        // });
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
         
-
-        //自动滚动
-        let scrollInterval;
+        // //自动滚动
+        // let scrollInterval;
         let isScrolling = false;
 
-        function startScrolling() {
-            if (isScrolling) return;
-            isScrolling = true;
-            scrollInterval = setInterval(() => {
-                const currentPos = window.pageYOffset;
-                // window.scrollTo(0, currentPos + 2);
-                
-                window.scrollTo({ top: currentPos + 50, behavior: 'smooth' });
-                if (currentPos >= document.body.scrollHeight - window.innerHeight) {
-                    console.log(document.body.scrollHeight,window.innerHeight);
-                    clearInterval(scrollInterval);
-                    isScrolling = false;
-                }
-            }, 60);
-        }
-        function stopScrolling() {
-            if (!isScrolling) {
-                // 当在底部时点击返回顶部
-                if (window.pageYOffset >= document.body.scrollHeight - window.innerHeight) {
-                    // window.scrollTo({ top: 0, behavior: 'smooth' });
-                }
-                return;
+        function autoScroll() {
+            window.scrollBy(0, 2); // 向下滚动50px
+            if ((window.pageYOffset + window.innerHeight < document.body.scrollHeight) && !isScrolling) {
+                requestAnimationFrame(autoScroll); // 继续滚动，直到页面底部
             }
-            
-            clearInterval(scrollInterval);
-            isScrolling = false;
         }
+        
         document.addEventListener('touchend', (e) => {
-            if (e.target.tagName !== 'A') {
-                isScrolling ? stopScrolling() : startScrolling();
+            isScrolling = !isScrolling;
+            if(!isScrolling){
+                requestAnimationFrame(autoScroll);
             }
         });
+
+        requestAnimationFrame(autoScroll); // 开始滚动
+
+
+        // function startScrolling() {
+        //     if (isScrolling) return;
+        //     isScrolling = true;
+        //     scrollInterval = setInterval(() => {
+        //         const currentPos = window.pageYOffset;
+        //         // window.scrollTo(0, currentPos + 2);
+                
+        //         window.scrollTo({ top: currentPos + 50, behavior: 'smooth' });
+        //         if (currentPos >= document.body.scrollHeight - window.innerHeight) {
+        //             console.log(document.body.scrollHeight,window.innerHeight);
+        //             clearInterval(scrollInterval);
+        //             isScrolling = false;
+        //         }
+        //     }, 60);
+        // }
+        // function stopScrolling() {
+        //     if (!isScrolling) {
+        //         // 当在底部时点击返回顶部
+        //         if (window.pageYOffset >= document.body.scrollHeight - window.innerHeight) {
+        //             // window.scrollTo({ top: 0, behavior: 'smooth' });
+        //         }
+        //         return;
+        //     }
+            
+        //     clearInterval(scrollInterval);
+        //     isScrolling = false;
+        // }
+        // document.addEventListener('touchend', (e) => {
+        //     if (e.target.tagName !== 'A') {
+        //         isScrolling ? stopScrolling() : startScrolling();
+        //     }
+        // });
 
         // 初始化
         document.addEventListener('DOMContentLoaded', () => {
@@ -376,9 +392,10 @@
         // document.addEventListener('load', () => {
         //     startScrolling(); 
         // });
-        window.onload = function (){
-            startScrolling(); 
-        }
+
+        // window.onload = function (){
+        //     startScrolling(); 
+        // }
     </script>
 </body>
 </html>
